@@ -1,0 +1,57 @@
+<html>
+
+<head>
+  <title>new implementation</title>
+</head>
+
+<body>
+  <ol>
+    <li>create empty object</li>
+    <li>assign constructor to object.__proto__</li>
+    <li>assign properties to obj.</li>
+    <li>return constructor's result if it is not null and is an object.</li>
+  </ol>
+  <script src="./dataBind.js"></script>
+  <script type="text/javascript">
+    function myNew(con) {
+      return function () {
+        if (typeof con !== 'function') {
+          throw TypeError('not constructor')
+        }
+        var obj = Object.create(null)
+        Object.defineProperty(obj, '__proto__', {
+          configurable: true,
+          enumerable: false,
+          value: con.prototype,
+          writable: true
+        })
+        var result = con.call(obj, ...arguments)
+        if (result && typeof result === 'object') {
+          return result
+        }
+
+        return obj
+      }
+    }
+
+    function Demo(id, name) {
+      this.id = id;
+      this.name = name;
+    }
+
+    function DemoR(id, name) {
+      this.id = id;
+      this.name = name;
+      return {
+        id, name
+      }
+    }
+
+    var d1 =new Demo('id', 'name')
+    var d2 = myNew(Demo)('id', 'name')
+    var d3 = new DemoR('id', 'name')
+    var d4 = myNew(DemoR)('id', 'name')
+  </script>
+</body>
+
+</html>

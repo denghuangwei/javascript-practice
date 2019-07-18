@@ -1,0 +1,75 @@
+<html>
+
+<head>
+  <title>bind implementation</title>
+</head>
+
+<body>
+  <div v-bind="myCallTestWindow">myCallTestWindow</div>
+  <div v-bind="myCallTestObj">myCallTestObj</div>
+  <div v-bind="callWithArgsWindow">callWithArgsWindow</div>
+  <div v-bind="callWithArgsObj">callWithArgsWindow</div>
+  <script src="./dataBind.js"></script>
+  <script type="text/javascript">
+    Function.prototype.myBind = function (context) {
+      if (typeof this !== 'function') {
+        throw new TypeError('not funciton')
+      }
+      let self = this
+      let bindArgs = [].slice.call(arguments, 1)
+      return function F() {
+        if (this instanceof F) {
+          return new self(...bindArgs, ...arguments)
+        } else {
+          return self.apply(context, [...bindArgs, ...arguments])
+        }
+      }
+    }
+    var id = 'window id';
+    var obj = {
+      id: 'obj id'
+    }
+    function calltest() {
+      return this.id
+    }
+
+
+    function callWithArgs() {
+      let result = [...arguments, this.id]
+      console.log(result)
+      return result
+    }
+
+
+    (function () {
+      var calltestO = calltest.myBind(obj)
+      var callWithArgsO = callWithArgs.myBind(obj, [1])
+      var data = {
+        myCallTestWindow: '',
+        myCallTestObj: '',
+        callWithArgsWindow: '',
+        callWithArgsObj: ''
+      }
+      bindData(data)
+      console.log('before set')
+      showLog(data)
+      setTimeout(() => {
+        data.myCallTestWindow = calltest()
+        data.myCallTestObj = calltestO()
+        data.callWithArgsWindow = callWithArgs(1, 2, 3, 4)
+        data.callWithArgsObj = callWithArgsO(5, 6, 7, { a: 1 })
+        console.log('after set')
+        showLog(data)
+      }, 1000);
+    })()
+
+    function showLog(data) {
+      console.log(data.myCallTestWindow)
+      console.log(data.myCallTestObj)
+      console.log(data.callWithArgsWindow)
+      console.log(data.callWithArgsObj)
+    }
+  </script>
+</body>
+
+</html>

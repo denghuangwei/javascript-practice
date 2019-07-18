@@ -1,0 +1,75 @@
+<html>
+
+<head>
+  <title>instanceof implementation</title>
+</head>
+
+<body>
+  <div id="sup"></div>
+  <div id="v1"></div>
+  <div id="p1"></div>
+  <div id="v2"></div>
+  <div id="p2"></div>
+  <div id="sub"></div>
+  <div id="v3"></div>
+  <div id="p3"></div>
+  <div id="v4"></div>
+  <div id="p4"></div>
+  <script type="text/javascript">
+    function myInstanceof (instance, con) {
+      var __proto__ = Object.getPrototypeOf(instance)
+      var proto = con.prototype
+      while(true) {
+        if (!__proto__) {
+          return false
+        }
+        if (__proto__ === proto) {
+          return true
+        }
+        __proto__ = Object.getPrototypeOf(__proto__)
+      }
+    }
+
+    class Super {
+      constructor() {
+      }
+      
+      toString() {
+        return 'created by Super'
+      }
+    }
+
+    class Sub extends Super {
+      constructor() {
+        super()
+      }
+
+      toString() {
+        return 'created by Sub'
+      }
+    }
+
+    var sup = new Super();
+    var sub = new Sub();
+    var v1 = myInstanceof(sup, Super)
+    var p1 = sup instanceof Super
+    var v2 = myInstanceof(sup, Sub)
+    var p2 = sup instanceof Sub
+    var v3 = myInstanceof(sub, Super)
+    var p3 = sub instanceof Super
+    var v4 = myInstanceof(sub, Sub)
+    var p4 = sub instanceof Sub
+    document.querySelector('#sup').innerHTML = sup
+    document.querySelector('#sub').innerHTML = sub
+    document.querySelector('#v1').innerHTML = v1
+    document.querySelector('#v2').innerHTML = v2
+    document.querySelector('#v3').innerHTML = v3
+    document.querySelector('#v4').innerHTML = v4
+    document.querySelector('#p1').innerHTML = p1
+    document.querySelector('#p2').innerHTML = p2
+    document.querySelector('#p3').innerHTML = p3
+    document.querySelector('#p4').innerHTML = p4
+  </script>
+</body>
+
+</html>
