@@ -92,45 +92,46 @@
       then(onFulfilled, onRejected) {
         const { _value, _status } = this
         // 返回一个新的Promise对象
-        return new MyPromise((onFulfilledNext, onRejectedNext) => {
+        return new MyPromise((resolveNext, rejectNext) => {
           // 封装一个成功时执行的函数
           let fulfilled = value => {
             try {
               if (!isFunction(onFulfilled)) {
-                onFulfilledNext(value)
+                // ex: MyPromise.resolve({a:1}).then('str1').then(data => console.log(data))
+                resolveNext(value)
               } else {
                 let res = onFulfilled(value);
                 if (res instanceof MyPromise) {
                   // 如果当前回调函数返回MyPromise对象，必须等待其状态改变后在执行下一个回调
-                  res.then(onFulfilledNext, onRejectedNext)
+                  res.then(resolveNext, rejectNext)
                 } else {
                   //否则会将返回结果直接作为参数，传入下一个then的回调函数，并立即执行下一个then的回调函数
-                  onFulfilledNext(res)
+                  resolveNext(res)
                 }
               }
             } catch (err) {
               // 如果函数执行出错，新的Promise对象的状态为失败
-              onRejectedNext(err)
+              rejectNext(err)
             }
           }
           // 封装一个失败时执行的函数
           let rejected = error => {
             try {
               if (!isFunction(onRejected)) {
-                onRejectedNext(error)
+                rejectNext(error)
               } else {
                 let res = onRejected(error);
                 if (res instanceof MyPromise) {
                   // 如果当前回调函数返回MyPromise对象，必须等待其状态改变后在执行下一个回调
-                  res.then(onFulfilledNext, onRejectedNext)
+                  res.then(resolveNext, rejectNext)
                 } else {
                   //否则会将返回结果直接作为参数，传入下一个then的回调函数，并立即执行下一个then的回调函数
-                  onFulfilledNext(res)
+                  resolveNext(res)
                 }
               }
             } catch (err) {
               // 如果函数执行出错，新的Promise对象的状态为失败
-              onRejectedNext(err)
+              rejectNext(err)
             }
           }
           switch (_status) {

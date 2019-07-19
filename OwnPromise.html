@@ -1,0 +1,125 @@
+<html>
+
+<head>
+  <title>own promise implementation</title>
+</head>
+
+<body>
+  <script>
+    const isFunction = handler => handler && typeof handler === 'function'
+    const PENDING = "pending"
+    const FULFILLED = "fullfilled"
+    const REJECTED = "rejected"
+    class OwnPromise {
+      constructor(handler) {
+        this.state = PENDING
+        this.value = undefined
+        this.onFulfilledQueues = []
+        this.onRejectedQueues = []
+        try {
+          handler(this.resolve.bind(this), this.reject.bind(this))
+        } catch (error) {
+          this.reject.call(this, error)
+        }
+      }
+
+      resolve(val) {
+        if (this.state !== PENDING) return
+        setTimeout(() => {
+          let runFulfilled = value => {
+            let cb
+            while (cb = this.onFulfilledQueues.shift()) {
+              cb(value)
+            }
+          }
+          let runRejected = error => {
+            let cb
+            while (cb = this.onRejectedQueues.shift()) {
+              cb(error)
+            }
+          }
+
+          if (val instanceof OwnPromise) {
+            val.then(data => {
+              this.value = data
+              this.state = FULFILLED
+              runFulfilled(data)
+            }, err => {
+              this.value = err
+              this.state = REJECTED
+              runRejected(err)
+            })
+          } else {
+            this.value = val
+            this.state = FULFILLED
+            runFulfilled(val)
+          }
+        }, 0);
+      }
+
+      reject(err) {
+        if (this.state !== PENDING) return
+        setTimeout(() => {
+          let cb
+          while (cb = this.onRejectedQueues.shift()) {
+            cb(error)
+          }
+          this.value = val
+          this.state = REJECTED
+        }, 0);
+      }
+
+      then(onFulfilled, onRejected) {
+        let { state, value } = this
+        return new OwnPromise((resolveNext, rejectNext) => {
+          let fulfilled = (val) => {
+            try {
+              if (!isFunction(onFulfilled)) {
+                resolveNext(val)
+              } else {
+                let res = onFulfilled(val)
+                if (res instanceof OwnPromise) {
+                  res.then(resolveNext, rejectNext)
+                } else {
+                  resolveNext(res)
+                }
+              }
+            } catch (error) {
+              rejectNext(error)
+            }
+          }
+          let rejected = (err) => {
+            try {
+              if (!isFunction(onRejected)) {
+                rejectNext(err)
+              } else {
+                let res = onRejected(err)
+                if (res instanceof OwnPromise) {
+                  res.then(resolveNext, rejectNext)
+                } else {
+                  rejectNext(res)
+                }
+              }
+            } catch (error) {
+              rejectNext(error)
+            }
+          }
+          switch (state) {
+            case PENDING:
+              this.onFulfilledQueues.push(fulfilled)
+              this.onRejectedQueues.push(rejected)
+              break
+            case FULFILLED:
+              fulfilled(value)
+              break
+            case REJECTED:
+              rejected(value)
+              break
+          }
+        })
+      }
+    }
+  </script>
+</body>
+
+</html>
