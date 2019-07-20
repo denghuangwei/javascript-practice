@@ -1,0 +1,66 @@
+<html>
+
+<head>
+  <title>event bus implementation</title>
+</head>
+
+<body>
+  <script type="text/javascript">
+    class EventBus {
+      constructor() {
+        this.listeners = new Map()
+      }
+
+      addListener(name, handler) {
+        if (!this.listeners.has(name)) {
+          this.listeners.set(name, [])
+        }
+
+        this.listeners.get(name).push(handler)
+        
+        return () => {
+          this.listeners.get(name) = this.listeners.get(name).filter(h => h !== handler)
+        }
+      }
+
+      removeListener(name, handler) {
+        if (!this.listeners.has(name)) {
+          return
+        }
+
+        if (!handler) {
+          this.listeners.delete(name)
+          return
+        }
+
+        let handlers = this.listeners.get(name)
+        let index = handlers.indexOf(handler)
+        if (index < 0) {
+          return
+        }
+
+        handlers.splice(index, 1)
+
+        if (handlers.length < 1) {
+          this.listeners.delete(name)
+        }
+      }
+
+      clear() {
+        this.listeners.clear()
+      }
+
+      trigger(name, ...args) {
+        if (!this.listeners.has(name)) {
+          return
+        }
+
+        this.listeners.get(name).forEach((handler) => {
+          handler.apply(null, args)
+        })
+      }
+    }
+  </script>
+</body>
+
+</html>
