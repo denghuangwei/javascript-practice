@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>debounce implement</title>
+</head>
+
+<body>
+  <div>debounce <input id="debounce" type="text"></div>
+  <div>throttle <input id="throttle" type="text"></div>
+  <script type="text/javascript">
+  function debounce(fn, delay) {
+    let timer
+    return function() {
+      clearTimeout(timer)
+      
+      timer = setTimeout(() => {
+        fn.apply(this, arguments)
+      }, delay);
+    }
+  }
+
+  function throttle(fn, delay) {
+    let timer
+    let lastTime = Date.now()
+    return function() {
+      let now = Date.now()
+      if (!lastTime || lastTime + delay < now) {
+        lastTime = now
+        fn.apply(this, arguments)
+      } else {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          lastTime = Date.now()
+          fn.apply(this, arguments)
+        }, delay);
+      }
+    }
+  }
+  
+  (function() {
+    document.querySelector("#debounce").addEventListener('input', debounce(function(e) {
+      console.log(e.target.value)
+    }, 200))
+    document.querySelector("#throttle").addEventListener('input', throttle(function(e) {
+      console.log(e.target.value)
+    }, 2000))
+  }())
+  </script>
+</body>
+
+</html>
