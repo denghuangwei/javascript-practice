@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>lazy loading</title>
+  <style>
+    img {
+      padding-top: 10px;
+    }
+
+    img[lazy-load] {
+      display: block;
+      width: 200px;
+      height: 125px;
+    }
+
+    .image-container {
+      margin-top: 900px;
+      border-top: gray solid 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="image-container">
+    <img src="./image/001.jpeg" alt="">
+    <img original-src="./image/002.jpeg" alt="" lazy-load>
+    <img src="./image/002.jpeg" alt="" lazy-load>
+    <img src="./image/003.jpeg" alt="" lazy-load>
+    <img src="./image/001.jpeg" alt="" lazy-load>
+    <img src="./image/002.jpeg" alt="" lazy-load>
+    <img src="./image/003.jpeg" alt="" lazy-load>
+    <img src="./image/001.jpeg" alt="" lazy-load>
+    <img src="./image/002.jpeg" alt="" lazy-load>
+    <img src="./image/003.jpeg" alt="" lazy-load>
+    <img src="./image/001.jpeg" alt="" lazy-load>
+    <img src="./image/002.jpeg" alt="" lazy-load>
+    <img src="./image/003.jpeg" alt="" lazy-load>
+    <img src="./image/001.jpeg" alt="" lazy-load>
+    <img src="./image/002.jpeg" alt="" lazy-load>
+    <img src="./image/003.jpeg" alt="" lazy-load>
+    <img src="./image/001.jpeg" alt="" lazy-load>
+    <img src="./image/002.jpeg" alt="" lazy-load>
+    <img src="./image/003.jpeg" alt="" lazy-load>
+    <img src="./image/001.jpeg" alt="" lazy-load>
+    <img src="./image/002.jpeg" alt="" lazy-load>
+    <img src="./image/003.jpeg" alt="" lazy-load>
+    <img src="./image/001.jpeg" alt="" lazy-load>
+    <img src="./image/002.jpeg" alt="" lazy-load>
+    <img src="./image/003.jpeg" alt="" lazy-load>
+  </div>
+  <script type="text/javascript">
+    const defaultSrc = "./image/default.jpeg";
+    (function () {
+      let images = document.querySelectorAll('img[lazy-load]')
+      images.forEach((image) => {
+        let src = image.src
+        if (!image.hasAttribute("original-src")) {
+          image.setAttribute("original-src", src)
+        }
+        image.src = defaultSrc
+        observeImage(image)
+      })
+      let image = createImage('./image/002.jpeg', true)
+
+      document.querySelector('div.image-container').appendChild(image)
+    })()
+
+    function createImage(src, lazyLoading) {
+      let image = document.createElement('img')
+      if (!lazyLoading) {
+        image.src = src
+      } else {
+        image.src = defaultSrc
+        image.setAttribute('lazy-load', '')
+        image.setAttribute('original-src', src)
+        observeImage(image)
+      }
+      return image
+    }
+
+    function observeImage(image) {
+      var io = new IntersectionObserver((records, self) => {
+        records.forEach(e => {
+          if (e.isIntersecting) {
+            let image = e.target
+            image.src = image.attributes["original-src"].value
+            self.unobserve(e.target)
+          }
+        })
+      }, {
+          threshold: [0]
+        })
+      io.observe(image)
+    }
+  </script>
+</body>
+
+</html>
