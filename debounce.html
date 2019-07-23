@@ -6,11 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>debounce implement</title>
+  <style>
+  label {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    padding-right: 10px;
+  }
+  </style>
 </head>
 
 <body>
-  <div>debounce <input id="debounce" type="text"></div>
-  <div>throttle <input id="throttle" type="text"></div>
+  <div><label for="debounce">debounce:</label>  <input id="debounce" name="debounce" type="text"></div>
+  <div><label for="throttle">throttle:</label>  <input id="throttle" name="throttle" type="text"></div>
   <script type="text/javascript">
   function debounce(fn, delay) {
     let timer
