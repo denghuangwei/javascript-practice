@@ -1,8 +1,162 @@
 <html>
-  <head>
-    <title>router implementation</title>
-  </head>
-  <body>
-    <script type="text/javascript"></script>
-  </body>
+
+<head>
+  <title>router implementation</title>
+</head>
+
+<body>
+  <script type="text/javascript">
+    class RouteRecord {
+      constructor(name, path, children, cb) {
+        this.name = name
+        this.path = path
+        this.cb = cb
+        this.children = children || []
+      }
+
+      getFlattenRoutes() {
+        let routes = [this]
+        if (this.children && this.children.length) {
+          this.children.forEach(child => {
+            routes = routes.concat(child.getFlattenRoutes())
+          })
+        }
+
+        return routes
+      }
+    }
+
+    class Router {
+      constructor(options) {
+        if (options && options.routes && !Array.isArray(options.routes)) {
+          throw TypeError('routes is required and should be an array')
+        }
+
+        this.routeRecords = this.convertRoutesToRecords(options.routes)
+      }
+
+      get nameRecordMap() {
+        let map = new Map()
+        this.routeRecords.forEach(record => {
+          if (!map.get(record.name)) {
+            map.set(record.name, record)
+          }
+        })
+        return map
+      }
+
+      get pathRecordMap() {
+        let map = new Map()
+        this.routeRecords.forEach(record => {
+          if (!map.get(record.path)) {
+            map.set(record.path, record)
+          }
+        })
+        return map
+      }
+
+      convertRoutesToRecords(routes) {
+        return routes.reduce((result, item) => {
+          return result.concat(this.convertRouteToRecords(item))
+        }, [])
+      }
+
+      convertRouteToRecords({ name, path, children, cb }) {
+        var record = new RouteRecord(name, path, children, cb)
+        return record.getFlattenRoutes()
+      }
+
+      addRoute(route) {
+        this.routeRecords = this.routeRecords.concat(this.convertRouteToRecords(route))
+      }
+
+      push(option) {
+        let record = this.getMatched(option)
+        if (!record && this.pathRecordMap.has("*")) {
+          record = this.pathRecordMap.get('*')
+        }
+
+        if (!record) {
+          return
+        }
+        
+        record.cb && record.cb.call(record)
+        history.pushState({}, '', option.path)
+      }
+
+      replace(option) {
+
+      }
+
+      getMatched(option) {
+        if (option.name && this.nameRecordMap.has(option.name)) {
+          return this.nameRecordMap.get(option.name)
+        }
+
+        let path = this.getRegPath(option.path, option.params)
+        if (path && this.pathRecordMap.has(path)) {
+          return this.pathRecordMap.get(path)
+        }
+
+        return null
+      }
+
+      getRegPath(path, params) {
+        if (!params && typeof params !== 'object') {
+          return path
+        }
+
+        let pathSegments = this.getSegments(path)
+        let keys = Object.keys(params)
+        for (let key in keys) {
+          if (typeof params[key] === 'object') {
+            continue
+          }
+          let index = pathSegments.indexOf(params[key])
+          if (index > -1) {
+            pathSegments[index] = `:${key}`
+          }
+        }
+        
+        return pathSegments.join('/')
+      }
+
+      getSegments(path) {
+        let index = path.indexOf('?')
+        if (index > -1) {
+          path = path.slice(0, index)
+        }
+
+        let index2 = path.indexOf('#')
+        if (index2 > -1) {
+          path = path.slice(0, index2)
+        }
+
+        if (path.startsWith('/')) {
+          path = path.slice(1)
+        }
+
+        if (path.endsWith('/')) {
+          path = path.slice(0, -1)
+        }
+
+        return path.split('/')
+      }
+    }
+  
+    var router = new Router({
+        routes: [{
+          name: 'a',
+          path: '/a',
+          cb(data) {
+            console.log('/a', JSON.stringify(this))
+          }
+        }]
+      })
+      router.push({
+        name: 'a'
+      })
+  </script>
+</body>
+
 </html>

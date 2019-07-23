@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>inherit implement</title>
+</head>
+<body>
+  <div v-bind="subPro"></div>
+  <div v-bind="supPro"></div>
+  <script src="./dataBind.js"></script>
+  <script type="text/javascript">
+  function SuperClass() {
+    this.superProperty = 'super'
+  }
+
+  SuperClass.prototype.getProperty = function() {
+    return this.superProperty
+  }
+
+  function SubClass() {
+    SuperClass.call(this)
+    this.subProperty = "sub"
+  }
+
+  function inherit(sub, sup) {
+    sub.prototype = Object.create(sup.prototype)
+    sub.prototype.constructor = sub
+  }
+
+  inherit(SubClass, SuperClass)
+
+  SubClass.prototype.getSubProperty = function() {
+    return this.subProperty
+  }
+
+  let sub = new SubClass()
+  let subPro = sub.getSubProperty()
+  let supPro = sub.getProperty()
+
+  let data = {
+    subPro, supPro
+  }
+
+  bindData(data)
+
+  data.subPro = subPro
+  data.supPro = supPro
+  </script>
+</body>
+</html>
