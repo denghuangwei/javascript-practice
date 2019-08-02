@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>dh friend</title>
+  <style>
+    * {
+      margin: 0px;
+      padding: 0px;
+    }
+
+    body {
+      min-height: 1000px;
+    }
+
+    .nav-bar .back-btn {
+      position: fixed;
+      top: 10px;
+      left: 5%;
+      color: white;
+      font-size: 30px;
+    }
+
+    .nav-bar .take-photo-btn {
+      display: block;
+      width: 42px;
+      height: 42px;
+      position: fixed;
+      top: 10px;
+      right: 5%;
+      display: block;
+      background-color: white
+    }
+
+    .header-image {
+      height: 250px;
+      width: 100%;
+      padding: 0px;
+      margin: 0px;
+    }
+
+    .header-image img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .avatar-info {
+      position: absolute;
+      right: 5%;
+      top: 220px;
+      height: 50px;
+    }
+
+    .avatar-info .avatar {
+      width: 55px;
+      height: 50px;
+      margin-left: 10px;
+    }
+
+    .avatar-info .nick-name {
+      position: relative;
+      top: -25px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .friend-messages {
+      margin-top: 60px;
+    }
+
+    .friend-message-item {
+      display: flex;
+      padding: 10px;
+      border-bottom: solid gray 1px;
+    }
+
+    .friend-avatar {
+      width: 33px;
+      height: 30px;
+      flex-shrink: 0;
+      margin-right: 10px;
+    }
+
+    .friend-avatar img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .friend-nick-name {
+      font-weight: bold;
+      color: darkslategray;
+    }
+
+    span.friend-nick-name {
+      display: inline-block;
+      margin: 0px 2px;
+    }
+
+    .message-image-list {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .message-image-list .message-image-item {
+      width: 70px;
+      height: 70px;
+      border-style: none;
+      margin: 5px;
+    }
+
+    .message-image-list .message-image-item img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .message-item-footer .release-time {
+      float: left;
+    }
+
+    .message-item-footer .more-action {
+      float: right;
+    }
+
+    .message-item-footer:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    .comments {
+      margin-top: 10px;
+      background-color: gainsboro;
+      position: relative;
+    }
+
+    .comments::before {
+      z-index: -1;
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 15px;
+      width: 20px;
+      height: 20px;
+      margin-top: -10px;
+      background-color: gainsboro;
+      /*自动继承父元素的背景*/
+      transform: rotate(45deg);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="nav-bar">
+    <span class="back-btn">❮</span>
+    <span class="take-photo-btn"></span>
+  </div>
+  <div class="header-image">
+    <img src="./image/002.jpeg" alt="">
+  </div>
+  <div class="avatar-info">
+    <span class="nick-name">denghuang wei</span>
+    <img class="avatar" src="./image/003.jpeg" alt="">
+  </div>
+  <div class="friend-messages">
+    <div class="friend-message-item">
+      <div class="friend-avatar">
+        <img src="./image/002.jpeg" alt="">
+      </div>
+      <div class="message-container">
+        <div class="friend-nick-name">Friend name</div>
+        <div class="message-content">
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+        </div>
+        <div class="message-image-list">
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+        </div>
+        <div class="message-item-footer">
+          <span class="release-time">7小时前</span>
+          <span class="more-action">..</span>
+        </div>
+        <div class="comments">
+          <div class="comment-item">
+            <span class="friend-nick-name">friend1</span>: 哈哈哈哈哈哈哈哈哈师傅说的话说的话
+          </div>
+          <div class="comment-item">
+            <span class="friend-nick-name">friend2</span>: hello my friend
+          </div>
+          <div class="comment-item">
+            <span class="friend-nick-name">friend3</span>回复<span class="friend-nick-name">friend2</span>: hello my
+            friend, nice to meet you.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="friend-message-item">
+      <div class="friend-avatar">
+        <img src="./image/002.jpeg" alt="">
+      </div>
+      <div class="message-container">
+        <div class="friend-nick-name">Friend name</div>
+        <div class="message-content">
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+        </div>
+        <div class="message-image-list">
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+        </div>
+        <div class="message-item-footer">
+          <span class="release-time">7小时前</span>
+          <span class="more-action">..</span>
+        </div>
+        <div class="comments">
+          <div class="comment-item">
+            <span class="friend-nick-name">friend1</span>: 哈哈哈哈哈哈哈哈哈师傅说的话说的话
+          </div>
+          <div class="comment-item">
+            <span class="friend-nick-name">friend2</span>: hello my friend
+          </div>
+          <div class="comment-item">
+            <span class="friend-nick-name">friend3</span>回复<span class="friend-nick-name">friend2</span>: hello my
+            friend, nice to meet you.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="friend-message-item">
+      <div class="friend-avatar">
+        <img src="./image/002.jpeg" alt="">
+      </div>
+      <div class="message-container">
+        <div class="friend-nick-name">Friend name</div>
+        <div class="message-content">
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+          我始终都在，愿一切安好
+        </div>
+        <div class="message-image-list">
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+          <div class="message-image-item">
+            <img src="./image/003.jpeg" alt="">
+          </div>
+        </div>
+        <div class="message-item-footer">
+          <span class="release-time">7小时前</span>
+          <span class="more-action">..</span>
+        </div>
+        <div class="comments">
+          <div class="comment-item">
+            <span class="friend-nick-name">friend1</span>: 哈哈哈哈哈哈哈哈哈师傅说的话说的话
+          </div>
+          <div class="comment-item">
+            <span class="friend-nick-name">friend2</span>: hello my friend
+          </div>
+          <div class="comment-item">
+            <span class="friend-nick-name">friend3</span>回复<span class="friend-nick-name">friend2</span>: hello my
+            friend, nice to meet you.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
