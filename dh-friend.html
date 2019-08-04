@@ -393,7 +393,7 @@
     (function () {
       let navbarClass = document.querySelector('.nav-bar').classList
       let friendtitleClass = document.querySelector('.nav-bar .friend-title').classList
-      document.addEventListener('scroll', throttle(function (e) {
+      window.addEventListener('scroll', throttle(function (e) {
         var doc = document.documentElement;
         var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
         
