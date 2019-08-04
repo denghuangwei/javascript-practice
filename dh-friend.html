@@ -34,6 +34,14 @@
       margin: 10px 0px 0px 3%;
     }
 
+    .nav-bar .friend-title {
+      float: left;
+      font-size: 23px;
+      margin: 15px 0px 0px 0px;
+      width: 70%;
+      text-align: center;
+    }
+
     .nav-bar::after {
       content: '';
       display: block;
@@ -127,6 +135,10 @@
       flex-wrap: wrap;
     }
 
+    .display-none {
+      display: none;
+    }
+
     .message-image-list .message-image-item {
       width: 70px;
       height: 70px;
@@ -178,6 +190,7 @@
 <body>
   <div class="nav-bar">
     <span class="back-btn">❮</span>
+    <span class="friend-title">朋友圈</span>
     <span class="take-photo-btn"></span>
   </div>
   <div class="header-image">
@@ -378,14 +391,18 @@
 
   <script type="text/javascript">
     (function () {
+      let navbarClass = document.querySelector('.nav-bar').classList
+      let friendtitleClass = document.querySelector('.nav-bar .friend-title').classList
       document.addEventListener('scroll', throttle(function (e) {
         var doc = document.documentElement;
-        var left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
         var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+        
         if (top > 200) {
-          document.querySelector('.nav-bar').classList.add('active')
+          navbarClass.add('active')
+          friendtitleClass.remove('display-none')
         } else {
-          document.querySelector('.nav-bar').classList.remove('active')
+          navbarClass.remove('active')
+          friendtitleClass.add('display-none')
         }
       }, 200))
 
