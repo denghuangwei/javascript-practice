@@ -1,3 +1,7 @@
+/*
+* It is an practice js to get more fimiliar with the Vue.js
+*/
+
 var parsePath = function (expOrFn) {
   let list = expOrFn.split('.')
   return function (obj) {
