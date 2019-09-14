@@ -7,56 +7,65 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>debounce/throttle implement</title>
   <style>
-  label {
-    display: inline-block;
-    width: 100px;
-    text-align: right;
-    padding-right: 10px;
-  }
+    label {
+      display: inline-block;
+      width: 100px;
+      text-align: right;
+      padding-right: 10px;
+    }
   </style>
 </head>
 
 <body>
-  <div><label for="debounce">debounce:</label>  <input id="debounce" name="debounce" type="text"></div>
-  <div><label for="throttle">throttle:</label>  <input id="throttle" name="throttle" type="text"></div>
+  <div><label for="debounce">debounce:</label> <input id="debounce" name="debounce" type="text"></div>
+  <div><label for="throttle">throttle:</label> <input id="throttle" name="throttle" type="text"></div>
   <script type="text/javascript">
-  function debounce(fn, delay) {
-    let timer
-    return function() {
-      clearTimeout(timer)
-      
-      timer = setTimeout(() => {
-        fn.apply(this, arguments)
-      }, delay);
-    }
-  }
-
-  function throttle(fn, delay) {
-    let timer
-    let lastTime = Date.now()
-    return function() {
-      let now = Date.now()
-      if (!lastTime || lastTime + delay < now) {
-        lastTime = now
-        fn.apply(this, arguments)
-      } else {
+    function debounce(fn, delay) {
+      let timer
+      let lastTime
+      return function () {
         clearTimeout(timer)
+
         timer = setTimeout(() => {
+          if (lastTime) {
+            console.log('time:' + (Date.now() - lastTime))
+          }
           lastTime = Date.now()
           fn.apply(this, arguments)
         }, delay);
       }
     }
-  }
-  
-  (function() {
-    document.querySelector("#debounce").addEventListener('input', debounce(function(e) {
-      console.log(e.target.value)
-    }, 200))
-    document.querySelector("#throttle").addEventListener('input', throttle(function(e) {
-      console.log(e.target.value)
-    }, 2000))
-  }())
+
+    function throttle(fn, delay) {
+      let timer
+      let lastTime
+      return function () {
+        let now = Date.now()
+        if (!lastTime || lastTime + delay < now) {
+          if (lastTime) {
+            console.log('time:' + (now - lastTime))
+          }
+          lastTime = now
+          fn.apply(this, arguments)
+        } else {
+          clearTimeout(timer)
+          timer = setTimeout(() => {
+            console.log('time:' + (now - lastTime))
+            lastTime = Date.now()
+            fn.apply(this, arguments)
+          }, delay);
+        }
+      }
+    }
+
+    (function () {
+      document.querySelector("#debounce").addEventListener('input', debounce(function (e) {
+        console.log(e.target.value)
+      }, 200))
+      document.querySelector("#throttle").addEventListener('input', throttle(function (e) {
+        console.log(e.target.value)
+      }, 2000))
+    }())
   </script>
 </body>
 

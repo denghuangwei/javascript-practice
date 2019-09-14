@@ -20,6 +20,7 @@
       position: fixed;
       width: 100%;
       height: 60px;
+      border: none;
       z-index: 1;
     }
 
@@ -393,7 +394,9 @@
     (function () {
       let navbarClass = document.querySelector('.nav-bar').classList
       let friendtitleClass = document.querySelector('.nav-bar .friend-title').classList
+      let count = 0;
       window.addEventListener('scroll', throttle(function (e) {
+        console.log(count++)
         var doc = document.documentElement;
         var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
         

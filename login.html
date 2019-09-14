@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>login page</title>
+  <style>
+    #login-form {
+      width: 50%;
+      margin: 100px auto;
+      border: 1px solid gray;
+      text-align: center;
+    }
+
+    .login-footer {
+      margin: 30px auto;
+    }
+
+    .login-footer input {
+      height: 20px;
+    }
+
+    .form-item {
+      margin: 20px auto;
+    }
+  </style>
+</head>
+
+<body>
+  <form method="POST" id="login-form">
+    <div class="form-item">
+      <label for="username">user name:</label>
+      <input type="text" id="username" name="username" placeholder="please input user name">
+    </div>
+    <div class="form-item">
+      <label for="password">password:</label>
+      <input type="password" id="password" name="password" placeholder="please input password">
+    </div>
+    <div class="login-footer">
+      <input type="submit" value="submit">
+    </div>
+  </form>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    (function () {
+      let form = document.querySelector("#login-form")
+      form.onsubmit = function () {
+        let usernameEle = document.querySelector('#username')
+        let username = usernameEle.value
+        if (username.length < 8) {
+          console.log('username min length is 8')
+          return false
+        }
+
+        let psEle = document.querySelector("#password")
+        let ps = psEle.value
+        if (ps.length < 6) {
+          console.log('password min length is 6')
+          return false
+        }
+
+        axios.post('http://www.login.com', {
+          username: username,
+          password: ps
+        }).then(response => {
+          if (response && response.status === 200) {
+            console.log('succuess')
+          } else {
+            console.log('incorrect username or password')
+          }
+        }).catch(error => {
+          console.log('incorrect username or password')
+        })
+
+        return true;
+      }
+    })()
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./js/due.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <div class="fill-container">
+      author: <input id="author" type="text" :value="author" @blur="updatedblur">
+      <br>
+      message: <input id="message" type="text" :value="message" @blur="messageblur">
+    </div>
+    <div>
+    </div>
+    <div class="message-container">
+      author: {{ author }}
+      <br>
+      message: {{ message }}
+      <br><br>
+      {{ wrapperMessage }}
+    </div>
+  </div>
+  <script type="text/javascript">
+    var app = new Due({
+      el: '#app',
+      data() {
+        return {
+          message: 'hello',
+          author: 'omg'
+        }
+      },
+      computed: {
+        wrapperMessage() {
+          return `hello, ${this.author}. <br> here is the message: ${this.message}. time: ${(new Date()).toDateString()}`
+        }
+      },
+      methods: {
+        messageblur(e) {
+          this.message = e.target.value
+        },
+        updatedblur(e) {
+          this.author = e.target.value
+        }
+      }
+    })
+  </script>
+
+  <style>
+    .fill-container {
+      text-align: center;
+      border-bottom: 2px solid gray;
+      padding-bottom: 10px;
+    }
+
+    .message-container {
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</body>
+
+</html>
